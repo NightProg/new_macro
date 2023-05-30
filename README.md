@@ -24,9 +24,9 @@ struct MyStruct {
 ```
 The macro will generate a new function for your struct that accepts optional arguments:
 ```rust
-let instance = MyStruct::new(Some(32), None, 34); // Create an instance with custom values
+let instance = MyStruct::new(Some(45), None, 34); // Create an instance with custom values
 ```
-In the example above, the new function is called with specific arguments to provide custom values for the attributes. The first attribute a is set to 32
+In the example above, the new function is called with specific arguments to provide custom values for the attributes. The first attribute a is set to 45
 
 Please note that the arguments passed to the new function should match the order and type of the struct's attributes.
 
