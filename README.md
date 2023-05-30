@@ -34,8 +34,13 @@ Please note that the arguments passed to the new function should match the order
 Contributions are welcome! If you want to improve the new_macro crate, please follow these steps:
 
 Fork the project
+
 Create a new branch (`git checkout -b feature/YourFeature`)
+
 Make your modifications
+
 Commit your changes (`git commit -m 'Add YourFeature'`)
+
 Push the branch (`git push origin feature/YourFeature`)
+
 Open a pull request
