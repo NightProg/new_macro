@@ -6,6 +6,22 @@ use quote::quote;
 
 
 #[proc_macro_derive(New)]
+/// This macro will generate a new function for the struct that will allow you to create a new instance of the struct.
+/// 
+/// # Example
+/// ```rust
+/// use new_macro::New;
+/// 
+/// #[derive(New)]
+/// struct MyStruct {
+///    a: u32,
+///    b: bool,
+///    c: i32
+///   // Other attributes...
+/// }
+/// 
+/// let instance = MyStruct::new(/* a */ 12, /* b */ true, /* c */ 32);
+/// ```
 pub fn new_derive(input: TokenStream) -> TokenStream {
     let tokens = parse_macro_input!(input as DeriveInput);
 
