@@ -14,9 +14,7 @@ use new_macro::New;
 ```rust
 #[derive(New)]
 struct MyStruct {
-    #[default = 32]
     a: u32,
-    #[default = true]
     b: bool,
     c: i32
     // Other attributes...
