@@ -22,7 +22,6 @@ struct MyStruct {
 ```
 The macro will generate a new function for your struct that accepts arguments:
 ```rust
-#[derive(New)]
 let instance = MyStruct::new(34, true, 3); // Create an instance 
 ```
 
