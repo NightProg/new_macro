@@ -1,13 +1,11 @@
-extern crate proc_macro;
-use proc_macro::TokenStream;
-use std::collections::HashMap;
 
+
+use proc_macro::TokenStream;
 use syn::{parse_macro_input, DeriveInput};
 use quote::quote;
 
 
-
-#[proc_macro_derive(New, attributes(default))]
+#[proc_macro_derive(New)]
 pub fn new_derive(input: TokenStream) -> TokenStream {
     let tokens = parse_macro_input!(input as DeriveInput);
 
@@ -24,90 +22,32 @@ pub fn new_derive(input: TokenStream) -> TokenStream {
     };
 
 
-    let mut args = Vec::new();
+    let mut field_names = Vec::new();
+    let mut field_types = Vec::new();
+    let mut field_values = Vec::new();
 
-    let mut field_instance = Vec::new();
-    let mut args_with_default = Vec::new();
-    let mut field_instance_with_default_value = Vec::new();
-    let mut methods = Vec::new();
+    for field in fields.named.iter() {
+        let field_name = field.ident.as_ref().unwrap();
+        let field_type = &field.ty;
+        let field_value = quote! { #field_name };
 
-    for field in fields.named.clone() {
-        let default_value = field.attrs.into_iter()
-            .filter(|attr| {
-                attr.meta
-                    .path()
-                    .is_ident("default")
-            }).map(|attr| {
-                let value = attr.meta
-                    .require_name_value()
-                    .expect("Expected a name value pair");
-
-                value.clone().value
-
-            }).nth(0);
-
-        let type_ = field.ty;
-        let name = field.ident.unwrap();
-
-        match default_value {
-            Some(default) => {
-                args_with_default.push(quote! {
-                    #name: #type_
-                });
-                field_instance_with_default_value.push(quote! {
-                    #name
-                });
-                field_instance.push(quote! {
-                    #name: #default
-                });
-
-                methods.push(quote! {
-                    pub fn with_#name(&self, value: #ty) -> Self {
-                        Self {
-                            #name: value,
-                            ..self
-                        }
-                    }
-                });
-            },
-            None => {
-                args.push(quote! {
-                    #name: #type_
-                });
-
-                field_instance.push(quote! {
-                    #name
-                });
-
-
-            }
-        };
-
+        field_names.push(field_name);
+        field_types.push(field_type);
+        field_values.push(field_value);
     }
 
-    args_with_default.extend(args.clone());
-    field_instance_with_default_value.extend(field_instance.clone());
 
-    let body = quote! {
+    let expanded = quote! {
         impl #name {
-            pub fn new(#(#args),*) -> Self {
+            pub fn new(#(#field_names: #field_types),*) -> Self {
                 Self {
-                    #(#field_instance),*
+                    #(#field_names: #field_values),*
                 }
             }
-
-            pub fn new_with_default(#(#args_with_default),*) -> Self {
-                Self {
-                    #(#field_instance_with_default_value),*
-                }
-            }
-
-            #(#methods)*
-
         }
     };
 
-    body.into()
+    expanded.into()
 }
 
 
