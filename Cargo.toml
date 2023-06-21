@@ -4,7 +4,11 @@ version = "0.0.0"
 authors = ["codeure24 <85784092+antoineB24@users.noreply.github.com>"]
 description = "a proc_macro crate that generates a new struct with a new function"
 keywords = ["new", "proc_macro", "procmacro"]
-edition = "2018"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+homepage = "https://github.com/NightProg/new_macro"
+repository = "https://github.com/NightProg/new_macro"
+readme = "README.md"
 
 [lib]
 proc-macro = true
